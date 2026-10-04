@@ -64,31 +64,33 @@ function showLandingPage() {
 async function handleLogin(event) {
     event.preventDefault();
     
+    // Nettoyage de l'organisation et du mot de passe
     const orgInput = document.getElementById("org-input").value.trim().toUpperCase();
     const pwdInput = document.getElementById("password-input").value.trim();
     const errorMsg = document.getElementById("error-message");
 
     if (errorMsg) {
         errorMsg.style.color = "#2563eb";
-        errorMsg.textContent = "Vérification des accès en cours...";
+        errorMsg.textContent = "Vérification en cours...";
     }
 
     try {
+        // On récupère l'utilisateur par son nom d'agence uniquement
         const { data: users, error } = await sbClient
             .from('users_agency')
             .select('*')
-            .eq('username', orgInput)
-            .eq('password_hash', pwdInput);
+            .eq('username', orgInput);
 
         if (error) throw error;
 
-        if (users && users.length > 0) {
+        // On vérifie ensuite le mot de passe localement (évite les soucis de sensibilité à la casse Supabase)
+        if (users && users.length > 0 && users[0].password_hash === pwdInput) {
             currentUserSession = users[0];
             
-            // Masquer la mire de connexion
+            // Masquer la fenêtre de connexion
             document.getElementById("login-section").style.display = "none";
 
-            // Mise à jour de l'en-tête
+            // Mise à jour de l'affichage
             document.getElementById("auth-btn").style.display = "none";
             const logoutBtn = document.getElementById("btn-logout-agency");
             const logoutNameElem = document.getElementById("logout-agency-name");
@@ -98,8 +100,6 @@ async function handleLogin(event) {
 
             // Afficher le Dashboard
             document.getElementById("dashboard-layout").style.display = "flex";
-            
-            // Mettre à jour la fiche d'identité de l'agence
             updateAgencyDashboard(currentUserSession);
 
         } else {
@@ -117,7 +117,6 @@ async function handleLogin(event) {
         }
     }
 }
-
 // Mettre à jour les informations d'agence
 function updateAgencyDashboard(user) {
     const titleElem = document.getElementById("agency-title-display");
