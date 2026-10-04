@@ -6,7 +6,7 @@ body {
     background-color: #f8fafc;
     color: #1e293b;
 }
-/* Arrière-plan sombre plein écran */
+/* SECTION CONNEXION PLEIN ÉCRAN */
 #login-section {
     display: none;
     position: fixed;
@@ -14,12 +14,22 @@ body {
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-color: rgba(15, 23, 42, 0.75); /* Effet d'assombrissement */
-    z-index: 99999; /* Se place au-dessus de tout le reste */
+    background-color: rgba(15, 23, 42, 0.85); /* Fond assombri */
+    z-index: 99999;
     justify-content: center;
     align-items: center;
 }
 
+.login-card {
+    background-color: #ffffff !important;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.4);
+    width: 90%;
+    max-width: 400px;
+    position: relative;
+    z-index: 100000;
+}
 /* Carte blanche contenant le formulaire */
 #login-section .login-card,
 #login-section .login-modal-content {
@@ -32,30 +42,6 @@ body {
     position: relative;
     z-index: 100000; /* Assure que la carte est au-dessus du fond sombre */
     color: #1e293b;
-}
-
-/* Style de la page de connexion dynamique plein écran */
-#login-section {
-    display: none; /* Masqué par défaut */
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: #0f172a; /* Fond sombre plein écran */
-    z-index: 99999; /* Par-dessus tout le reste */
-    justify-content: center;
-    align-items: center;
-}
-
-.login-card {
-    background: #ffffff;
-    padding: 40px;
-    border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-    width: 90%;
-    max-width: 400px;
-    box-sizing: border-box;
 }
 
 .login-card h2 {
