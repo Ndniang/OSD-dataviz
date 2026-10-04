@@ -1,8 +1,9 @@
-// 1. Connexion à Supabase
-const SUPABASE_URL = "https://dicuiejxstwgcktmafrq.supabase.co/rest/v1/";
-const SUPABASE_ANON_KEY = "sb_publishable_pDa2WjyKlV7f1ax6rgsoSg_Oa41pWpk";
+// Initialisation de la connexion Supabase
+const SUPABASE_URL = "https://TON_PROJECT_ID.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_pDa2WjyKlV7f1ax6rgsoSg_...";
 
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+// On utilise supabaseClient pour éviter le conflit de nom avec la librairie globale window.supabase
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // 2. Gestionnaire de connexion mis à jour
 async function handleLogin(event) {
@@ -12,11 +13,10 @@ async function handleLogin(event) {
     const pwdInput = document.getElementById("password-input").value;
     const errorMsg = document.getElementById("error-message");
 
-    if (errorMsg) errorMsg.textContent = "Vérification des accès...";
+    if (errorMsg) errorMsg.textContent = "Vérification en cours...";
 
     try {
-        // Interrogation de la table users_agency dans Supabase
-        const { data: users, error } = await supabase
+        const { data: users, error } = await supabaseClient
             .from('users_agency')
             .select('*')
             .eq('username', orgInput)
@@ -35,11 +35,9 @@ async function handleLogin(event) {
             };
             isLoggedIn = true;
 
-            // Masquer la landing page et le formulaire de connexion
             document.getElementById("landing-page").style.display = "none";
             document.getElementById("login-section").style.display = "none";
 
-            // Affichage du bouton de déconnexion rouge
             document.getElementById("auth-btn").style.display = "none";
             const logoutBtn = document.getElementById("btn-logout-agency");
             const logoutNameElem = document.getElementById("logout-agency-name");
@@ -47,7 +45,6 @@ async function handleLogin(event) {
             if (logoutBtn) logoutBtn.style.display = "inline-block";
             if (logoutNameElem) logoutNameElem.textContent = `(${user.username})`;
 
-            // Affichage du tableau de bord
             document.getElementById("dashboard-layout").style.display = "flex";
             
             const titleElem = document.getElementById("agency-title-display");
@@ -58,12 +55,12 @@ async function handleLogin(event) {
             goToAgencyHome();
 
         } else {
-            if (errorMsg) errorMsg.textContent = "Nom d'agence ou mot de passe incorrect.";
+            if (errorMsg) errorMsg.textContent = "Identifiants ou nom d'agence incorrects.";
         }
 
     } catch (err) {
-        console.error("Erreur de connexion Supabase :", err);
-        if (errorMsg) errorMsg.textContent = "Erreur réseau lors de la connexion.";
+        console.error("Erreur de connexion :", err);
+        if (errorMsg) errorMsg.textContent = "Erreur de connexion au serveur.";
     }
 }
 // --- DICTIONNAIRE DES RAPPORTS POWER BI ---
@@ -111,18 +108,14 @@ let isLoggedIn = false;
 
 // --- GESTION DE LA CONNEXION ---
 function toggleAuth() {
-    if (isLoggedIn) {
-        // Déconnexion
-        isLoggedIn = false;
-        currentUserSession = null;
-        document.getElementById("auth-btn").textContent = "Se connecter";
-        document.getElementById("dashboard-layout").style.display = "none";
-        document.getElementById("login-section").style.display = "none";
-        document.getElementById("landing-page").style.display = "block";
-    } else {
-        // Ouvrir la page de connexion
-        document.getElementById("landing-page").style.display = "none";
-        document.getElementById("login-section").style.display = "flex";
+    const loginSection = document.getElementById("login-section");
+    if (loginSection) {
+        if (loginSection.style.display === "none" || loginSection.style.display === "") {
+            loginSection.style.display = "block";
+            loginSection.scrollIntoView({ behavior: 'smooth' });
+        } else {
+            loginSection.style.display = "none";
+        }
     }
 }
 
