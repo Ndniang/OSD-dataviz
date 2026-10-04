@@ -7,6 +7,94 @@ body {
     color: #1e293b;
 }
 
+/* Style de la page de connexion dynamique plein écran */
+#login-section {
+    display: none; /* Masqué par défaut */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #0f172a; /* Fond sombre plein écran */
+    z-index: 99999; /* Par-dessus tout le reste */
+    justify-content: center;
+    align-items: center;
+}
+
+.login-card {
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    width: 90%;
+    max-width: 400px;
+    box-sizing: border-box;
+}
+
+.login-card h2 {
+    margin-top: 10px;
+    margin-bottom: 5px;
+    color: #1e293b;
+}
+
+.login-card p {
+    color: #64748b;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #334155;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    box-sizing: border-box;
+}
+
+.btn-submit {
+    width: 100%;
+    padding: 12px;
+    background-color: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.btn-submit:hover {
+    background-color: #1d4ed8;
+}
+
+.btn-back {
+    background: none;
+    border: none;
+    color: #2563eb;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 0;
+}
+
+#error-message {
+    font-size: 13px;
+    margin: 8px 0;
+    min-height: 18px;
+}
 .site-header {
     display: flex;
     justify-content: space-between;
