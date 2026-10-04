@@ -111,8 +111,7 @@ function toggleAuth() {
     const loginSection = document.getElementById("login-section");
     if (loginSection) {
         if (loginSection.style.display === "none" || loginSection.style.display === "") {
-            loginSection.style.display = "block";
-            loginSection.scrollIntoView({ behavior: 'smooth' });
+            loginSection.style.display = "flex"; // Affiche la page de connexion plein écran
         } else {
             loginSection.style.display = "none";
         }
