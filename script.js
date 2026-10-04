@@ -4,79 +4,6 @@ const SUPABASE_ANON_KEY = "sb_publishable_pDa2WjyKlV7f1ax6rgsoSg_Oa41pWpk";
 
 const sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-// 1. Basculer vers la page de connexion
-function toggleAuth() {
-    document.getElementById("landing-page").style.display = "none";
-    document.getElementById("login-section").style.display = "flex"; // Affiche la vue connexion
-}
-
-// 2. Revenir à l'accueil
-function showLandingPage() {
-    document.getElementById("login-section").style.display = "none";
-    document.getElementById("landing-page").style.display = "block";
-}
-
-// 3. Traiter la connexion avec Supabase
-async function handleLogin(event) {
-    event.preventDefault(); // Empêche le rechargement de la page
-    
-    const orgInput = document.getElementById("org-input").value.trim().toUpperCase();
-    const pwdInput = document.getElementById("password-input").value.trim();
-    const errorMsg = document.getElementById("error-message");
-
-    if (errorMsg) {
-        errorMsg.style.color = "#2563eb";
-        errorMsg.textContent = "Vérification des accès en cours...";
-    }
-
-    try {
-        // Interrogation de Supabase
-        const { data: users, error } = await sbClient
-            .from('users_agency')
-            .select('*')
-            .eq('username', orgInput)
-            .eq('password_hash', pwdInput);
-
-        if (error) throw error;
-
-        if (users && users.length > 0) {
-            const user = users[0];
-            
-            // Masquer la vue de connexion
-            document.getElementById("login-section").style.display = "none";
-
-            // Afficher le bouton de déconnexion dans le header
-            document.getElementById("auth-btn").style.display = "none";
-            const logoutBtn = document.getElementById("btn-logout-agency");
-            const logoutNameElem = document.getElementById("logout-agency-name");
-            
-            if (logoutBtn) logoutBtn.style.display = "inline-block";
-            if (logoutNameElem) logoutNameElem.textContent = `(${user.username})`;
-
-            // Afficher la vue Dashboard Agence
-            const dashboardLayout = document.getElementById("dashboard-layout");
-            if (dashboardLayout) dashboardLayout.style.display = "flex";
-            
-            const titleElem = document.getElementById("agency-title-display");
-            const perimeterElem = document.getElementById("agency-perimeter-display");
-            if (titleElem) titleElem.textContent = `Agence de ${user.username}`;
-            if (perimeterElem) perimeterElem.textContent = user.region_filter;
-
-        } else {
-            if (errorMsg) {
-                errorMsg.style.color = "#dc2626";
-                errorMsg.textContent = "Nom d'agence ou mot de passe incorrect.";
-            }
-        }
-
-    } catch (err) {
-        console.error("Erreur Supabase :", err);
-        if (errorMsg) {
-            errorMsg.style.color = "#dc2626";
-            errorMsg.textContent = "Erreur de connexion au serveur.";
-        }
-    }
-}
 // --- DICTIONNAIRE DES RAPPORTS POWER BI ---
 const reports = {
     commercial: {
@@ -118,76 +45,106 @@ const reports = {
 };
 
 let currentUserSession = null;
-let isLoggedIn = false;
 
-// --- GESTION DE LA CONNEXION ---
+// --- GESTION DE LA NAVIGATION & CONNEXION ---
+
+// 1. Afficher la page de connexion
 function toggleAuth() {
-    const loginSection = document.getElementById("login-section");
-    if (loginSection) {
-        if (loginSection.style.display === "none" || loginSection.style.display === "") {
-            loginSection.style.display = "flex"; // Affiche la page de connexion plein écran
+    document.getElementById("landing-page").style.display = "none";
+    document.getElementById("login-section").style.display = "flex";
+}
+
+// 2. Revenir à l'accueil public
+function showLandingPage() {
+    document.getElementById("login-section").style.display = "none";
+    document.getElementById("landing-page").style.display = "block";
+}
+
+// 3. Authentification Supabase
+async function handleLogin(event) {
+    event.preventDefault();
+    
+    const orgInput = document.getElementById("org-input").value.trim().toUpperCase();
+    const pwdInput = document.getElementById("password-input").value.trim();
+    const errorMsg = document.getElementById("error-message");
+
+    if (errorMsg) {
+        errorMsg.style.color = "#2563eb";
+        errorMsg.textContent = "Vérification des accès en cours...";
+    }
+
+    try {
+        const { data: users, error } = await sbClient
+            .from('users_agency')
+            .select('*')
+            .eq('username', orgInput)
+            .eq('password_hash', pwdInput);
+
+        if (error) throw error;
+
+        if (users && users.length > 0) {
+            currentUserSession = users[0];
+            
+            // Masquer la mire de connexion
+            document.getElementById("login-section").style.display = "none";
+
+            // Mise à jour de l'en-tête
+            document.getElementById("auth-btn").style.display = "none";
+            const logoutBtn = document.getElementById("btn-logout-agency");
+            const logoutNameElem = document.getElementById("logout-agency-name");
+            
+            if (logoutBtn) logoutBtn.style.display = "inline-block";
+            if (logoutNameElem) logoutNameElem.textContent = `(${currentUserSession.username})`;
+
+            // Afficher le Dashboard
+            document.getElementById("dashboard-layout").style.display = "flex";
+            
+            // Mettre à jour la fiche d'identité de l'agence
+            updateAgencyDashboard(currentUserSession);
+
         } else {
-            loginSection.style.display = "none";
+            if (errorMsg) {
+                errorMsg.style.color = "#dc2626";
+                errorMsg.textContent = "Nom d'agence ou mot de passe incorrect.";
+            }
+        }
+
+    } catch (err) {
+        console.error("Erreur Supabase :", err);
+        if (errorMsg) {
+            errorMsg.style.color = "#dc2626";
+            errorMsg.textContent = "Erreur de connexion au serveur.";
         }
     }
 }
 
-function handleLogin(event) {
-    event.preventDefault();
-    
-    const orgInput = document.getElementById("org-input").value.trim().toUpperCase();
-    const pwdInput = document.getElementById("password-input").value;
-    const errorMsg = document.getElementById("error-message");
+// Mettre à jour les informations d'agence
+function updateAgencyDashboard(user) {
+    const titleElem = document.getElementById("agency-title-display");
+    const panelName = document.getElementById("panel-agency-name");
+    const panelRegion = document.getElementById("panel-region-name");
+    const sidebarTitle = document.getElementById("sidebar-agency-title");
 
-    const user = USERS_DATABASE.find(u => u.username === orgInput && u.password === pwdInput);
-
-    if (user) {
-        currentUserSession = user;
-        isLoggedIn = true;
-
-        // 1. Masquer la landing page et la connexion
-        document.getElementById("landing-page").style.display = "none";
-        document.getElementById("login-section").style.display = "none";
-
-        // 2. Basculer l'affichage des boutons dans le header
-        document.getElementById("auth-btn").style.display = "none";
-        
-        const logoutBtn = document.getElementById("btn-logout-agency");
-        const logoutNameElem = document.getElementById("logout-agency-name");
-        
-        if (logoutBtn) logoutBtn.style.display = "inline-block";
-        if (logoutNameElem) logoutNameElem.textContent = `(${user.username})`;
-
-        // 3. Afficher le dashboard et charger la vue d'accueil
-        document.getElementById("dashboard-layout").style.display = "flex";
-        
-        const titleElem = document.getElementById("agency-title-display");
-        const perimeterElem = document.getElementById("agency-perimeter-display");
-        if (titleElem) titleElem.textContent = `Agence de ${user.username}`;
-        if (perimeterElem) perimeterElem.textContent = user.regionFilter;
-
-        goToAgencyHome();
-
-    } else {
-        if (errorMsg) errorMsg.textContent = "Identifiants incorrects.";
-    }
+    if (titleElem) titleElem.textContent = `Bienvenue - Agence de ${user.username}`;
+    if (panelName) panelName.textContent = `Agence ${user.username}`;
+    if (panelRegion) panelRegion.textContent = user.region_filter || "Toutes Régions";
+    if (sidebarTitle) sidebarTitle.textContent = user.username;
 }
 
-// Fonction de déconnexion
-function logout() {
-    isLoggedIn = false;
-    currentUserSession = null;
+// Revenir à la vue d'accueil Agence
+function goToAgencyHome() {
+    const agencyPage = document.getElementById("agency-welcome-page");
+    const homeGrid = document.getElementById("dashboard-home-grid");
+    const reportHeader = document.getElementById("report-header-block");
+    const wrapperElem = document.querySelector(".powerbi-wrapper");
 
-    // Réafficher le bouton "Se connecter" et cacher le bouton de déconnexion
-    document.getElementById("auth-btn").style.display = "inline-block";
-    document.getElementById("btn-logout-agency").style.display = "none";
-
-    // Revenir à la page d'accueil publique
-    document.getElementById("dashboard-layout").style.display = "none";
-    document.getElementById("login-section").style.display = "none";
-    document.getElementById("landing-page").style.display = "block";
+    if (agencyPage) agencyPage.style.display = "flex";
+    if (homeGrid) homeGrid.style.display = "none";
+    if (reportHeader) reportHeader.style.display = "none";
+    if (wrapperElem) wrapperElem.style.display = "none";
 }
-// --- ÉTAPE 2 : OUVERTURE DE LA VUE DOMAINES (AVEC SIDEBAR) ---
+
+// Ouverture de la grille des domaines
 function openDomainsView() {
     const sidebar = document.getElementById("main-sidebar");
     const agencyPage = document.getElementById("agency-welcome-page");
@@ -198,7 +155,7 @@ function openDomainsView() {
     if (homeGrid) homeGrid.style.setProperty('display', 'grid', 'important');
 }
 
-// --- ÉTAPE 3 : CHARGEMENT D'UN RAPPORT POWER BI ---
+// Chargement d'un rapport Power BI
 function loadReport(domainKey) {
     const agencyPage = document.getElementById("agency-welcome-page");
     const homeGrid = document.getElementById("dashboard-home-grid");
@@ -212,24 +169,20 @@ function loadReport(domainKey) {
     const selectedReport = reports[domainKey];
     if (!selectedReport) return;
 
-    // Masquer les accueils
     if (agencyPage) agencyPage.style.display = "none";
     if (homeGrid) homeGrid.style.setProperty('display', 'none', 'important');
 
-    // Mettre à jour le titre
     if (reportHeader) reportHeader.style.display = "block";
     if (titleElem) titleElem.textContent = selectedReport.title;
     if (descElem) descElem.textContent = selectedReport.desc;
 
-    // Afficher la zone iframe
     if (wrapperElem) wrapperElem.style.display = "block";
     if (frameElem) frameElem.style.display = "block";
 
-    // Générer l'URL filtrée
     let targetUrl = selectedReport.url;
-    if (currentUserSession && currentUserSession.role === "AGENT") {
+    if (currentUserSession) {
         let tableAndColumn = (selectedReport.filterType === "Departement") ? "Agence/Departement" : "Agence/Region";
-        let filterValue = (selectedReport.filterType === "Departement") ? currentUserSession.deptFilter : currentUserSession.regionFilter;
+        let filterValue = (selectedReport.filterType === "Departement") ? currentUserSession.dept_filter : currentUserSession.region_filter;
 
         if (filterValue && filterValue !== "TOUT") {
             const separator = targetUrl.includes('?') ? '&' : '?';
@@ -239,23 +192,20 @@ function loadReport(domainKey) {
 
     if (frameElem) frameElem.src = targetUrl;
 
-    // Menu actif
     const menuItems = document.querySelectorAll(".sidebar-menu li");
     menuItems.forEach(item => item.classList.remove("active"));
     const activeItem = document.getElementById("menu-" + domainKey);
     if (activeItem) activeItem.classList.add("active");
 }
-function updateAgencyDashboard(agencyName) {
-    // 1. Mise à jour du bouton de déconnexion personnalisé
-    const logoutNameElem = document.getElementById("logout-agency-name");
-    if (logoutNameElem) {
-        logoutNameElem.textContent = `(${agencyName})`;
-    }
 
-    // 2. Mise à jour des titres et perimètres de la page
-    const titleElem = document.getElementById("agency-title-display");
-    const perimeterElem = document.getElementById("agency-perimeter-display");
+// Déconnexion
+function logout() {
+    currentUserSession = null;
 
-    if (titleElem) titleElem.textContent = `Agence de ${agencyName}`;
-    if (perimeterElem) perimeterElem.textContent = agencyName;
+    document.getElementById("auth-btn").style.display = "inline-block";
+    document.getElementById("btn-logout-agency").style.display = "none";
+
+    document.getElementById("dashboard-layout").style.display = "none";
+    document.getElementById("login-section").style.display = "none";
+    document.getElementById("landing-page").style.display = "block";
 }
