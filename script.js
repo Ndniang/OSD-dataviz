@@ -1,47 +1,71 @@
-// --- BASE DE DONNÉES UTILISATEURS ET AGENCES ---
-const USERS_DATABASE = [
-    {
-        username: "FLEXEAU",
-        password: "Nfn@26",
-        role: "DIRECTION",
-        regionFilter: "TOUT",
-        deptFilter: "TOUT",
-        displayName: "Direction Générale"
-    },
-    {
-        username: "KAFFRINE",
-        password: "Nfn@26",
-        role: "AGENT",
-        regionFilter: "Kaffrine",
-        deptFilter: "Kaffrine",
-        displayName: "Agence de Kaffrine"
-    },
-    {
-        username: "KAOLACK",
-        password: "Nfn@26",
-        role: "AGENT",
-        regionFilter: "Kaolack",
-        deptFilter: "Kaolack",
-        displayName: "Agence de Kaolack"
-    },
-    {
-        username: "NIORO",
-        password: "Nfn@26",
-        role: "AGENT",
-        regionFilter: "Nioro",
-        deptFilter: "Nioro",
-        displayName: "Agence de Nioro du Rip"
-    },
-    {
-        username: "KOUNGHEUL",
-        password: "Nfn@26",
-        role: "AGENT",
-        regionFilter: "Koungheul",
-        deptFilter: "Koungheul",
-        displayName: "Agence de Koungheul"
-    }
-];
+// 1. Connexion à Supabase
+const SUPABASE_URL = "https://dicuiejxstwgcktmafrq.supabase.co/rest/v1/";
+const SUPABASE_ANON_KEY = "sb_publishable_pDa2WjyKlV7f1ax6rgsoSg_Oa41pWpk";
 
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+// 2. Gestionnaire de connexion mis à jour
+async function handleLogin(event) {
+    event.preventDefault();
+    
+    const orgInput = document.getElementById("org-input").value.trim().toUpperCase();
+    const pwdInput = document.getElementById("password-input").value;
+    const errorMsg = document.getElementById("error-message");
+
+    if (errorMsg) errorMsg.textContent = "Vérification des accès...";
+
+    try {
+        // Interrogation de la table users_agency dans Supabase
+        const { data: users, error } = await supabase
+            .from('users_agency')
+            .select('*')
+            .eq('username', orgInput)
+            .eq('password_hash', pwdInput);
+
+        if (error) throw error;
+
+        if (users && users.length > 0) {
+            const user = users[0];
+            
+            currentUserSession = {
+                username: user.username,
+                displayName: user.display_name,
+                regionFilter: user.region_filter,
+                deptFilter: user.dept_filter
+            };
+            isLoggedIn = true;
+
+            // Masquer la landing page et le formulaire de connexion
+            document.getElementById("landing-page").style.display = "none";
+            document.getElementById("login-section").style.display = "none";
+
+            // Affichage du bouton de déconnexion rouge
+            document.getElementById("auth-btn").style.display = "none";
+            const logoutBtn = document.getElementById("btn-logout-agency");
+            const logoutNameElem = document.getElementById("logout-agency-name");
+            
+            if (logoutBtn) logoutBtn.style.display = "inline-block";
+            if (logoutNameElem) logoutNameElem.textContent = `(${user.username})`;
+
+            // Affichage du tableau de bord
+            document.getElementById("dashboard-layout").style.display = "flex";
+            
+            const titleElem = document.getElementById("agency-title-display");
+            const perimeterElem = document.getElementById("agency-perimeter-display");
+            if (titleElem) titleElem.textContent = `Agence de ${user.username}`;
+            if (perimeterElem) perimeterElem.textContent = user.region_filter;
+
+            goToAgencyHome();
+
+        } else {
+            if (errorMsg) errorMsg.textContent = "Nom d'agence ou mot de passe incorrect.";
+        }
+
+    } catch (err) {
+        console.error("Erreur de connexion Supabase :", err);
+        if (errorMsg) errorMsg.textContent = "Erreur réseau lors de la connexion.";
+    }
+}
 // --- DICTIONNAIRE DES RAPPORTS POWER BI ---
 const reports = {
     commercial: {
