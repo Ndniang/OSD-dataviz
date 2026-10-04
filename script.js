@@ -1,5 +1,5 @@
 // Initialisation de la connexion Supabase
-const SUPABASE_URL = "https://dicuiejxstwgcktmafrq.supabase.co/rest/v1/";
+const SUPABASE_URL = "https://dicuiejxstwgcktmafrq.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_pDa2WjyKlV7f1ax6rgsoSg_Oa41pWpk";
 
 const sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
