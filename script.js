@@ -1,6 +1,6 @@
 // Initialisation de la connexion Supabase
-const SUPABASE_URL = "https://TON_PROJECT_ID.supabase.co";
-const SUPABASE_ANON_KEY = "sb_publishable_pDa2WjyKlV7f1ax6rgsoSg_...";
+const SUPABASE_URL = "https://dicuiejxstwgcktmafrq.supabase.co/rest/v1/";
+const SUPABASE_ANON_KEY = "sb_publishable_pDa2WjyKlV7f1ax6rgsoSg_Oa41pWpk";
 
 // On utilise supabaseClient pour éviter le conflit de nom avec la librairie globale window.supabase
 const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
