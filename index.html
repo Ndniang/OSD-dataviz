@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OSD DATAVIZ - Portail Agences</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- 1. EN-TÊTE -->
+    <header class="site-header">
+    <div class="logo-container">
+        <h1 id="header-logo" class="site-logo">OSD DATAVIZ</h1>
+    </div>
+    <nav class="main-nav">
+        <!-- Bouton avant connexion -->
+        <button id="auth-btn" class="btn-primary" onclick="toggleAuth()">Se connecter</button>
+
+        <!-- Bouton après connexion (masqué par défaut) -->
+        <button id="btn-logout-agency" class="btn-logout" onclick="logout()" style="display: none;">
+            🚪 Se déconnecter <span id="logout-agency-name"></span>
+        </button>
+    </nav>
+</header>
+
+    <!-- 2. LANDING PAGE PUBLIQUE -->
+    <section id="landing-page" class="landing-container">
+    
+    <div class="landing-hero">
+        <h2>Plateforme Analytics & Business Intelligence</h2>
+        <p>Accédez aux indicateurs clés de performance et aux tableaux de bord décisionnels d'OSD DATAVIZ.</p>
+    </div>
+
+    <!-- GRILLE DES 6 DOMAINES EN APERÇU (NON CLIQUABLE AVANT CONNEXION) -->
+    <div class="public-domains-grid">
+        <div class="public-card">
+            <span class="card-icon">📊</span>
+            <h3>Commercial</h3>
+            <p>Analyse des ventes, du chiffre d'affaires et du portefeuille client.</p>
+            <span class="lock-badge">🔒 Connexion requise</span>
+        </div>
+        <div class="public-card">
+            <span class="card-icon">⚙️</span>
+            <h3>Technique</h3>
+            <p>Suivi des infrastructures, interventions et maintenance.</p>
+            <span class="lock-badge">🔒 Connexion requise</span>
+        </div>
+        <div class="public-card">
+            <span class="card-icon">💳</span>
+            <h3>Facturation</h3>
+            <p>Suivi des abonnés facturés, de la consommation et des créances.</p>
+            <span class="lock-badge">🔒 Connexion requise</span>
+        </div>
+        <div class="public-card">
+            <span class="card-icon">🔌</span>
+            <h3>Branchement</h3>
+            <p>Gestion des nouvelles demandes et suivi des travaux.</p>
+            <span class="lock-badge">🔒 Connexion requise</span>
+        </div>
+        <div class="public-card">
+            <span class="card-icon">📩</span>
+            <h3>Réclamation</h3>
+            <p>Satisfaction abonnés, traitement des tickets et litiges.</p>
+            <span class="lock-badge">🔒 Connexion requise</span>
+        </div>
+        <div class="public-card">
+            <span class="card-icon">🏛️</span>
+            <h3>Recouvrement</h3>
+            <p>Suivi des encaissements, factures émises et créances.</p>
+            <span class="lock-badge">🔒 Connexion requise</span>
+        </div>
+    </div>
+    <!-- SECTION DEMANDE D'AIDE ET SUPPORT -->
+    <div class="help-section">
+        <div class="help-card">
+            <div class="help-icon">❓</div>
+            <div class="help-content">
+                <h3>Besoin d'aide ou d'un accès ?</h3>
+                <p>Vous n'avez pas encore vos identifiants ou vous rencontrez un problème d'accès aux tableaux de bord ? Contactez le support technique OSD DATAVIZ.</p>
+            </div>
+            <a href="mailto:support@osddataviz.sn" class="btn-help">📩 Demander de l'aide</a>
+        </div>
+    </div>
+
+</section>
+
+
+
+    <!-- 3. MIRE DE CONNEXION -->
+    <section id="login-section" class="auth-section" style="display: none;">
+        <div class="auth-card">
+            <h2>Connexion au Portail</h2>
+            <form onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label for="org-input">Organisation / Entreprise</label>
+                    <input type="text" id="org-input" placeholder="ex: KAFFRINE, KAOLACK, FLEXEAU" required>
+                </div>
+                <div class="form-group">
+                    <label for="password-input">Mot de passe</label>
+                    <input type="password" id="password-input" placeholder="Entrez votre mot de passe" required>
+                </div>
+                <p id="error-message" class="error-text"></p>
+                <div class="button-wrapper">
+                <button type="submit" class="btn-submit">Valider</button>
+            </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- 4. ESPACE APPLICATION (DASHBOARD) -->
+    <div id="dashboard-layout" class="dashboard-container" style="display: none;">
+
+        <!-- SIDEBAR DE NAVIGATION (Masquée au début) -->
+        <aside id="main-sidebar" class="sidebar" style="display: none;">
+            <div class="sidebar-title">
+                <h2 id="sidebar-agency-title">FLEXEAU</h2>
+            </div>
+            <ul class="sidebar-menu">
+                <li id="menu-accueil" onclick="goToAgencyHome()">🏠 Accueil Agence</li>
+                <li id="menu-commercial" onclick="loadReport('commercial')">📊 Commercial</li>
+                <li id="menu-technique" onclick="loadReport('technique')">⚙️ Technique</li>
+                <li id="menu-facturation" onclick="loadReport('facturation')">💳 Facturation</li>
+                <li id="menu-branchement" onclick="loadReport('branchement')">🔌 Branchement</li>
+                <li id="menu-reclamation" onclick="loadReport('reclamation')">📩 Réclamation</li>
+                <li id="menu-recouvrement" onclick="loadReport('recouvrement')">🏛️ Recouvrement</li>
+            </ul>
+        </aside>
+
+        <!-- CONTENU PRINCIPAL -->
+        <main class="main-content">
+
+            <!-- A. PAGE D'ACCUEIL DÉDIÉE À L'AGENCE (Étape 1 après connexion) -->
+            <div id="agency-welcome-page" class="agency-landing-grid">
+
+                
+                
+                <!-- PANNEAU FICHE D'IDENTITÉ D'AGENCE (Remplace le vide à gauche) -->
+                <div class="agency-info-panel">
+                    <div class="agency-icon">🏢</div>
+                    <h3 id="panel-agency-name">Agence</h3>
+                    <p class="panel-sub">Périmètre d'exploitation</p>
+                    <hr>
+                    <ul class="agency-details-list">
+                        <li>📍 <strong>Périmètre :</strong> <span id="panel-region-name">Local</span></li>
+                        <li>🔐 <strong>Niveau d'accès :</strong> Agent Local</li>
+                        <li>🟢 <strong>Statut :</strong> Session Sécurisée</li>
+                    </ul>
+                </div>
+
+                <!-- CARTE DE BIENVENUE ET BOUTON D'ACTION -->
+                <div class="hero-welcome-card">
+                    <span class="badge-status">🟢 Agence Connectée</span>
+                    <h1 id="agency-title-display">Bienvenue</h1>
+                    <p id="agency-subtitle-display">Plateforme Analytics & Business Intelligence.</p>
+                    
+                    <div class="action-box">
+                        <button class="btn-primary-lg" onclick="openDomainsView()">
+                            🚀 Accéder aux Domaines & Rapports
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- B. EN-TÊTE DU RAPPORT POWER BI -->
+            <div class="report-header" id="report-header-block" style="display: none;">
+                <h2 id="report-title">Titre du rapport</h2>
+                <p id="report-description">Description du domaine</p>
+            </div>
+
+            <!-- C. GRILLE DES DOMAINES -->
+            <div id="dashboard-home-grid" class="domains-grid" style="display: none;">
+                <div class="domain-card" onclick="loadReport('commercial')">
+                    <span class="card-icon">📊</span>
+                    <h3>Commercial</h3>
+                    <p>Analyse des ventes, CA et portefeuille client.</p>
+                </div>
+                <div class="domain-card" onclick="loadReport('technique')">
+                    <span class="card-icon">⚙️</span>
+                    <h3>Technique</h3>
+                    <p>Suivi des infrastructures et interventions.</p>
+                </div>
+                <div class="domain-card" onclick="loadReport('facturation')">
+                    <span class="card-icon">💳</span>
+                    <h3>Facturation</h3>
+                    <p>Suivi des abonnés facturés et créances.</p>
+                </div>
+                <div class="domain-card" onclick="loadReport('branchement')">
+                    <span class="card-icon">🔌</span>
+                    <h3>Branchement</h3>
+                    <p>Demandes de raccordement et délais.</p>
+                </div>
+                <div class="domain-card" onclick="loadReport('reclamation')">
+                    <span class="card-icon">📩</span>
+                    <h3>Réclamation</h3>
+                    <p>Satisfaction client et résolution des litiges.</p>
+                </div>
+                <div class="domain-card" onclick="loadReport('recouvrement')">
+                    <span class="card-icon">🏛️</span>
+                    <h3>Recouvrement</h3>
+                    <p>Factures émises et taux de recouvrement.</p>
+                </div>
+            </div>
+
+            <!-- D. WRAPPER POWER BI -->
+            <div class="powerbi-wrapper" style="display: none;">
+                <iframe id="powerbi-frame" src="" allowFullScreen="true"></iframe>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- CHARGEMENT DU FICHIER JAVASCRIPT -->
+    <script src="script.js"></script>
+</body>
+</html>
