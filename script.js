@@ -2,21 +2,41 @@
 const SUPABASE_URL = "https://dicuiejxstwgcktmafrq.supabase.co/rest/v1/";
 const SUPABASE_ANON_KEY = "sb_publishable_pDa2WjyKlV7f1ax6rgsoSg_Oa41pWpk";
 
-// On utilise supabaseClient pour éviter le conflit de nom avec la librairie globale window.supabase
-const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+// Client Supabase
+const sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-// 2. Gestionnaire de connexion mis à jour
+// Variables de session
+let isLoggedIn = false;
+let currentUserSession = null;
+
+// Affichage/Masquage de la modale de connexion
+function toggleAuth() {
+    const loginSection = document.getElementById("login-section");
+    if (loginSection) {
+        if (loginSection.style.display === "none" || loginSection.style.display === "") {
+            loginSection.style.display = "flex";
+        } else {
+            loginSection.style.display = "none";
+        }
+    }
+}
+
+// Fonction de traitement de la connexion
 async function handleLogin(event) {
-    event.preventDefault();
+    event.preventDefault(); // Empêche le rechargement de la page
     
     const orgInput = document.getElementById("org-input").value.trim().toUpperCase();
-    const pwdInput = document.getElementById("password-input").value;
+    const pwdInput = document.getElementById("password-input").value.trim();
     const errorMsg = document.getElementById("error-message");
 
-    if (errorMsg) errorMsg.textContent = "Vérification en cours...";
+    if (errorMsg) {
+        errorMsg.style.color = "#2563eb";
+        errorMsg.textContent = "Vérification des accès en cours...";
+    }
 
     try {
-        const { data: users, error } = await supabaseClient
+        // Interrogation de la table users_agency dans Supabase
+        const { data: users, error } = await sbClient
             .from('users_agency')
             .select('*')
             .eq('username', orgInput)
@@ -35,35 +55,45 @@ async function handleLogin(event) {
             };
             isLoggedIn = true;
 
-            document.getElementById("landing-page").style.display = "none";
-            document.getElementById("login-section").style.display = "none";
+            // Masquer la landing page et la section de connexion
+            const landingPage = document.getElementById("landing-page");
+            const loginSection = document.getElementById("login-section");
+            if (landingPage) landingPage.style.display = "none";
+            if (loginSection) loginSection.style.display = "none";
 
-            document.getElementById("auth-btn").style.display = "none";
+            // Mise à jour des boutons d'authentification
+            const authBtn = document.getElementById("auth-btn");
             const logoutBtn = document.getElementById("btn-logout-agency");
             const logoutNameElem = document.getElementById("logout-agency-name");
             
+            if (authBtn) authBtn.style.display = "none";
             if (logoutBtn) logoutBtn.style.display = "inline-block";
             if (logoutNameElem) logoutNameElem.textContent = `(${user.username})`;
 
-            document.getElementById("dashboard-layout").style.display = "flex";
+            // Affichage du tableau de bord
+            const dashboardLayout = document.getElementById("dashboard-layout");
+            if (dashboardLayout) dashboardLayout.style.display = "flex";
             
             const titleElem = document.getElementById("agency-title-display");
             const perimeterElem = document.getElementById("agency-perimeter-display");
             if (titleElem) titleElem.textContent = `Agence de ${user.username}`;
             if (perimeterElem) perimeterElem.textContent = user.region_filter;
 
-            goToAgencyHome();
-
         } else {
-            if (errorMsg) errorMsg.textContent = "Identifiants ou nom d'agence incorrects.";
+            if (errorMsg) {
+                errorMsg.style.color = "#dc2626";
+                errorMsg.textContent = "Nom d'agence ou mot de passe incorrect.";
+            }
         }
 
     } catch (err) {
-        console.error("Erreur de connexion :", err);
-        if (errorMsg) errorMsg.textContent = "Erreur de connexion au serveur.";
+        console.error("Erreur de connexion Supabase :", err);
+        if (errorMsg) {
+            errorMsg.style.color = "#dc2626";
+            errorMsg.textContent = "Erreur de connexion au serveur Supabase.";
+        }
     }
-}
-// --- DICTIONNAIRE DES RAPPORTS POWER BI ---
+}// --- DICTIONNAIRE DES RAPPORTS POWER BI ---
 const reports = {
     commercial: {
         title: "Domaine Commercial",
