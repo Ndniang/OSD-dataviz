@@ -6,6 +6,33 @@ body {
     background-color: #f8fafc;
     color: #1e293b;
 }
+/* Arrière-plan sombre plein écran */
+#login-section {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(15, 23, 42, 0.75); /* Effet d'assombrissement */
+    z-index: 99999; /* Se place au-dessus de tout le reste */
+    justify-content: center;
+    align-items: center;
+}
+
+/* Carte blanche contenant le formulaire */
+#login-section .login-card,
+#login-section .login-modal-content {
+    background-color: #ffffff !important; /* Force la couleur blanche */
+    padding: 35px 30px;
+    border-radius: 12px;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+    width: 90%;
+    max-width: 400px;
+    position: relative;
+    z-index: 100000; /* Assure que la carte est au-dessus du fond sombre */
+    color: #1e293b;
+}
 
 /* Style de la page de connexion dynamique plein écran */
 #login-section {
