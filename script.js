@@ -2,26 +2,21 @@
 const SUPABASE_URL = "https://dicuiejxstwgcktmafrq.supabase.co/rest/v1/";
 const SUPABASE_ANON_KEY = "sb_publishable_pDa2WjyKlV7f1ax6rgsoSg_Oa41pWpk";
 
-// Client Supabase
 const sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-// Variables de session
-let isLoggedIn = false;
-let currentUserSession = null;
-
-// Affichage/Masquage de la modale de connexion
+// 1. Basculer vers la page de connexion
 function toggleAuth() {
-    const loginSection = document.getElementById("login-section");
-    if (loginSection) {
-        if (loginSection.style.display === "none" || loginSection.style.display === "") {
-            loginSection.style.display = "flex";
-        } else {
-            loginSection.style.display = "none";
-        }
-    }
+    document.getElementById("landing-page").style.display = "none";
+    document.getElementById("login-section").style.display = "flex"; // Affiche la vue connexion
 }
 
-// Fonction de traitement de la connexion
+// 2. Revenir à l'accueil
+function showLandingPage() {
+    document.getElementById("login-section").style.display = "none";
+    document.getElementById("landing-page").style.display = "block";
+}
+
+// 3. Traiter la connexion avec Supabase
 async function handleLogin(event) {
     event.preventDefault(); // Empêche le rechargement de la page
     
@@ -35,7 +30,7 @@ async function handleLogin(event) {
     }
 
     try {
-        // Interrogation de la table users_agency dans Supabase
+        // Interrogation de Supabase
         const { data: users, error } = await sbClient
             .from('users_agency')
             .select('*')
@@ -47,30 +42,18 @@ async function handleLogin(event) {
         if (users && users.length > 0) {
             const user = users[0];
             
-            currentUserSession = {
-                username: user.username,
-                displayName: user.display_name,
-                regionFilter: user.region_filter,
-                deptFilter: user.dept_filter
-            };
-            isLoggedIn = true;
+            // Masquer la vue de connexion
+            document.getElementById("login-section").style.display = "none";
 
-            // Masquer la landing page et la section de connexion
-            const landingPage = document.getElementById("landing-page");
-            const loginSection = document.getElementById("login-section");
-            if (landingPage) landingPage.style.display = "none";
-            if (loginSection) loginSection.style.display = "none";
-
-            // Mise à jour des boutons d'authentification
-            const authBtn = document.getElementById("auth-btn");
+            // Afficher le bouton de déconnexion dans le header
+            document.getElementById("auth-btn").style.display = "none";
             const logoutBtn = document.getElementById("btn-logout-agency");
             const logoutNameElem = document.getElementById("logout-agency-name");
             
-            if (authBtn) authBtn.style.display = "none";
             if (logoutBtn) logoutBtn.style.display = "inline-block";
             if (logoutNameElem) logoutNameElem.textContent = `(${user.username})`;
 
-            // Affichage du tableau de bord
+            // Afficher la vue Dashboard Agence
             const dashboardLayout = document.getElementById("dashboard-layout");
             if (dashboardLayout) dashboardLayout.style.display = "flex";
             
@@ -87,13 +70,14 @@ async function handleLogin(event) {
         }
 
     } catch (err) {
-        console.error("Erreur de connexion Supabase :", err);
+        console.error("Erreur Supabase :", err);
         if (errorMsg) {
             errorMsg.style.color = "#dc2626";
-            errorMsg.textContent = "Erreur de connexion au serveur Supabase.";
+            errorMsg.textContent = "Erreur de connexion au serveur.";
         }
     }
-}// --- DICTIONNAIRE DES RAPPORTS POWER BI ---
+}
+// --- DICTIONNAIRE DES RAPPORTS POWER BI ---
 const reports = {
     commercial: {
         title: "Domaine Commercial",
