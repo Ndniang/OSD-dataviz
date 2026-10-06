@@ -43,6 +43,10 @@ body {
     z-index: 100000; /* Assure que la carte est au-dessus du fond sombre */
     color: #1e293b;
 }
+/* Cache la barre latérale quand la classe is-hidden est présente */
+.sidebar.is-hidden {
+    display: none !important;
+}
 
 .login-card h2 {
     margin-top: 10px;
