@@ -119,6 +119,8 @@ async function handleLogin(event) {
 }
 // Mettre à jour les informations d'agence
 function updateAgencyDashboard(user) {
+    const sidebar = document.getElementById("main-sidebar");
+    if (sidebar) sidebar.style.display = "none";
     const titleElem = document.getElementById("agency-title-display");
     const panelName = document.getElementById("panel-agency-name");
     const panelRegion = document.getElementById("panel-region-name");
@@ -132,26 +134,28 @@ function updateAgencyDashboard(user) {
 
 // Revenir à la vue d'accueil Agence
 function goToAgencyHome() {
+    const sidebar = document.getElementById("main-sidebar"); // Récupération de la sidebar
     const agencyPage = document.getElementById("agency-welcome-page");
     const homeGrid = document.getElementById("dashboard-home-grid");
     const reportHeader = document.getElementById("report-header-block");
     const wrapperElem = document.querySelector(".powerbi-wrapper");
 
+    if (sidebar) sidebar.style.display = "none"; // 👈 Masquer la barre latérale
     if (agencyPage) agencyPage.style.display = "flex";
     if (homeGrid) homeGrid.style.display = "none";
     if (reportHeader) reportHeader.style.display = "none";
     if (wrapperElem) wrapperElem.style.display = "none";
 }
 
-// Ouverture de la grille des domaines
+// Ouverture de la grille des domaines (Bouton "Accéder aux Domaines & Rapports")
 function openDomainsView() {
     const sidebar = document.getElementById("main-sidebar");
     const agencyPage = document.getElementById("agency-welcome-page");
-    const homeGrid = document.getElementById("dashboard-home-grid");
 
-    if (agencyPage) agencyPage.style.display = "none";
-    if (sidebar) sidebar.style.display = "block";
-    if (homeGrid) homeGrid.style.setProperty('display', 'grid', 'important');
+    if (sidebar) sidebar.style.display = "block"; // 👈 Réafficher la barre latérale
+    if (agencyPage) agencyPage.style.display = "none"; // Masquer la page d'accueil d'agence
+
+    // (Conservez le reste du code déjà présent dans votre fonction openDomainsView)
 }
 
 // Chargement d'un rapport Power BI
