@@ -129,22 +129,19 @@ function updateAgencyDashboard(user) {
     if (panelRegion) panelRegion.textContent = user.region_filter || "Toutes Régions";
     if (sidebarTitle) sidebarTitle.textContent = user.username;
 
-    // Masquer la barre latérale dès la connexion
+    // Cacher la sidebar dès l'arrivée sur l'accueil
     const sidebar = document.getElementById("main-sidebar");
-    if (sidebar) sidebar.style.display = "none";
+    if (sidebar) sidebar.classList.add("force-hide");
 }
 
 // Revenir à la vue d'accueil Agence
 function goToAgencyHome() {
-    // 1. Cacher la barre latérale sur la page d'accueil
     const sidebar = document.getElementById("main-sidebar");
-    if (sidebar) sidebar.style.display = "none";
+    if (sidebar) sidebar.classList.add("force-hide"); // 👈 On cache la sidebar
 
-    // 2. Afficher la vue de bienvenue
     const agencyPage = document.getElementById("agency-welcome-page");
     if (agencyPage) agencyPage.style.display = "flex";
 
-    // 3. Masquer le reste
     const homeGrid = document.getElementById("dashboard-home-grid");
     const reportHeader = document.getElementById("report-header-block");
     const wrapperElem = document.querySelector(".powerbi-wrapper");
@@ -153,18 +150,14 @@ function goToAgencyHome() {
     if (reportHeader) reportHeader.style.display = "none";
     if (wrapperElem) wrapperElem.style.display = "none";
 }
-
 // Ouverture de la grille des domaines (Bouton "Accéder aux Domaines & Rapports")
 function openDomainsView() {
-    // 1. Faire réapparaître la barre latérale
     const sidebar = document.getElementById("main-sidebar");
-    if (sidebar) sidebar.style.display = "block";
+    if (sidebar) sidebar.classList.remove("force-hide"); // 👈 On réaffiche la sidebar
 
-    // 2. Masquer la page de bienvenue
     const agencyPage = document.getElementById("agency-welcome-page");
     if (agencyPage) agencyPage.style.display = "none";
 
-    // 3. Charger le premier domaine par défaut (ex: Commercial)
     if (typeof loadReportDomain === "function") {
         loadReportDomain("Commercial");
     }
