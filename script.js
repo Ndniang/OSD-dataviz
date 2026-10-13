@@ -116,6 +116,8 @@ async function handleLogin(event) {
             errorMsg.textContent = "Erreur de connexion au serveur.";
         }
     }
+    goToAgencyHome();
+    
 }
 // Mettre à jour les informations d'agence
 function updateAgencyDashboard(user) {
