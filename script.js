@@ -134,35 +134,44 @@ function updateAgencyDashboard(user) {
     if (sidebar) sidebar.classList.add("force-hide");
 }
 
-// Revenir à la vue d'accueil Agence
+// 1. Revenir à la vue d'accueil Agence (Cache la sidebar et affiche la page de bienvenue)
 function goToAgencyHome() {
-    const sidebar = document.getElementById("main-sidebar");
-    if (sidebar) sidebar.classList.add("force-hide"); // 👈 On cache la sidebar
+    // Cacher la barre latérale
+    const sidebar = document.getElementById("agency-sidebar");
+    if (sidebar) sidebar.style.display = "none";
 
-    const agencyPage = document.getElementById("agency-welcome-page");
-    if (agencyPage) agencyPage.style.display = "flex";
+    // Afficher la page de bienvenue de l'agence
+    const agencyWelcomePage = document.getElementById("agency-welcome-page");
+    if (agencyWelcomePage) agencyWelcomePage.style.display = "grid"; // ou "flex" selon votre CSS
 
-    const homeGrid = document.getElementById("dashboard-home-grid");
-    const reportHeader = document.getElementById("report-header-block");
-    const wrapperElem = document.querySelector(".powerbi-wrapper");
-
-    if (homeGrid) homeGrid.style.display = "none";
+    // Cacher les blocs de rapports (si affichés)
+    const reportHeader = document.getElementById("report-header-block"); // Ajustez selon votre ID de header de rapport
+    const reportsContainer = document.querySelector(".powerbi-wrapper"); // Ou l'élément qui contient vos iframes
     if (reportHeader) reportHeader.style.display = "none";
-    if (wrapperElem) wrapperElem.style.display = "none";
+    if (reportsContainer) reportsContainer.style.display = "none";
 }
-// Ouverture de la grille des domaines (Bouton "Accéder aux Domaines & Rapports")
+
+// 2. Quand on clique sur "Accéder aux Domaines & Rapports"
 function openDomainsView() {
-    const sidebar = document.getElementById("main-sidebar");
-    if (sidebar) sidebar.classList.remove("force-hide"); // 👈 On réaffiche la sidebar
+    // Réafficher la barre latérale
+    const sidebar = document.getElementById("agency-sidebar");
+    if (sidebar) sidebar.style.display = "block"; // ou "flex" selon votre design initial
 
-    const agencyPage = document.getElementById("agency-welcome-page");
-    if (agencyPage) agencyPage.style.display = "none";
+    // Masquer la page de bienvenue de l'agence
+    const agencyWelcomePage = document.getElementById("agency-welcome-page");
+    if (agencyWelcomePage) agencyWelcomePage.style.display = "none";
 
-    if (typeof loadReportDomain === "function") {
-        loadReportDomain("Commercial");
+    // Afficher les blocs de rapports
+    const reportHeader = document.getElementById("report-header-block");
+    const reportsContainer = document.querySelector(".powerbi-wrapper");
+    if (reportHeader) reportHeader.style.display = "block";
+    if (reportsContainer) reportsContainer.style.display = "block";
+
+    // Charger par défaut le premier rapport (ex: commercial)
+    if (typeof loadReport === "function") {
+        loadReport('commercial');
     }
 }
-
 // Chargement d'un rapport Power BI
 function loadReport(domainKey) {
     const agencyPage = document.getElementById("agency-welcome-page");
