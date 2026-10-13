@@ -693,3 +693,7 @@ body {
     font-weight: 600;
     cursor: pointer;
 }
+/* Classe universelle pour forcer le masquage d'un élément */
+.force-hide {
+    display: none !important;
+}
