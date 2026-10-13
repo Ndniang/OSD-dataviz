@@ -119,8 +119,6 @@ async function handleLogin(event) {
 }
 // Mettre à jour les informations d'agence
 function updateAgencyDashboard(user) {
-    const sidebar = document.getElementById("main-sidebar");
-    if (sidebar) sidebar.style.display = "none";
     const titleElem = document.getElementById("agency-title-display");
     const panelName = document.getElementById("panel-agency-name");
     const panelRegion = document.getElementById("panel-region-name");
@@ -130,18 +128,27 @@ function updateAgencyDashboard(user) {
     if (panelName) panelName.textContent = `Agence ${user.username}`;
     if (panelRegion) panelRegion.textContent = user.region_filter || "Toutes Régions";
     if (sidebarTitle) sidebarTitle.textContent = user.username;
+
+    // Masquer la barre latérale dès la connexion
+    const sidebar = document.getElementById("main-sidebar");
+    if (sidebar) sidebar.style.display = "none";
 }
 
 // Revenir à la vue d'accueil Agence
 function goToAgencyHome() {
-    const sidebar = document.getElementById("main-sidebar"); // Récupération de la sidebar
+    // 1. Cacher la barre latérale sur la page d'accueil
+    const sidebar = document.getElementById("main-sidebar");
+    if (sidebar) sidebar.style.display = "none";
+
+    // 2. Afficher la vue de bienvenue
     const agencyPage = document.getElementById("agency-welcome-page");
+    if (agencyPage) agencyPage.style.display = "flex";
+
+    // 3. Masquer le reste
     const homeGrid = document.getElementById("dashboard-home-grid");
     const reportHeader = document.getElementById("report-header-block");
     const wrapperElem = document.querySelector(".powerbi-wrapper");
 
-    if (sidebar) sidebar.style.display = "none"; // 👈 Masquer la barre latérale
-    if (agencyPage) agencyPage.style.display = "flex";
     if (homeGrid) homeGrid.style.display = "none";
     if (reportHeader) reportHeader.style.display = "none";
     if (wrapperElem) wrapperElem.style.display = "none";
@@ -149,13 +156,18 @@ function goToAgencyHome() {
 
 // Ouverture de la grille des domaines (Bouton "Accéder aux Domaines & Rapports")
 function openDomainsView() {
+    // 1. Faire réapparaître la barre latérale
     const sidebar = document.getElementById("main-sidebar");
+    if (sidebar) sidebar.style.display = "block";
+
+    // 2. Masquer la page de bienvenue
     const agencyPage = document.getElementById("agency-welcome-page");
+    if (agencyPage) agencyPage.style.display = "none";
 
-    if (sidebar) sidebar.style.display = "block"; // 👈 Réafficher la barre latérale
-    if (agencyPage) agencyPage.style.display = "none"; // Masquer la page d'accueil d'agence
-
-    // (Conservez le reste du code déjà présent dans votre fonction openDomainsView)
+    // 3. Charger le premier domaine par défaut (ex: Commercial)
+    if (typeof loadReportDomain === "function") {
+        loadReportDomain("Commercial");
+    }
 }
 
 // Chargement d'un rapport Power BI
