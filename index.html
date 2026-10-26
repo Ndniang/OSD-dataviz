@@ -85,8 +85,6 @@
 
 </section>
 
-
-
     <!-- 3. MIRE DE CONNEXION PLEIN ÉCRAN -->
     <section id="login-section" class="auth-section" style="display: none;">
         <div class="login-card">
@@ -135,12 +133,10 @@
         <!-- CONTENU PRINCIPAL -->
         <main class="main-content">
 
-            <!-- A. PAGE D'ACCUEIL DÉDIÉE À L'AGENCE (Étape 1 après connexion) -->
+            <!-- A. PAGE D'ACCUEIL DÉDIÉE À L'AGENCE -->
             <div id="agency-welcome-page" class="agency-landing-grid">
-
                 
-                
-                <!-- PANNEAU FICHE D'IDENTITÉ D'AGENCE (Remplace le vide à gauche) -->
+                <!-- PANNEAU FICHE D'IDENTITÉ D'AGENCE -->
                 <div class="agency-info-panel">
                     <div class="agency-icon">🏢</div>
                     <h3 id="panel-agency-name">Agence</h3>
@@ -170,12 +166,19 @@
 
             <!-- B. EN-TÊTE DU RAPPORT POWER BI -->
             <div class="report-header" id="report-header-block" style="display: none;">
+                <!-- Bouton retour vers la grille des domaines -->
+                <button class="btn-secondary" onclick="showDomainsGrid()" style="margin-bottom: 15px; cursor: pointer; padding: 8px 16px; border-radius: 6px; border: 1px solid #cbd5e1; background: #fff; font-weight: 600; color: #1e293b;">⬅️ Retour aux domaines</button>
                 <h2 id="report-title">Titre du rapport</h2>
                 <p id="report-description">Description du domaine</p>
             </div>
 
             <!-- C. GRILLE DES DOMAINES -->
             <div id="dashboard-home-grid" class="domains-grid" style="display: none;">
+                <!-- Bouton retour vers la page d'accueil de l'agence -->
+                <div style="grid-column: 1 / -1; margin-bottom: 5px;">
+                    <button class="btn-secondary" onclick="goToAgencyHome()" style="cursor: pointer; padding: 8px 16px; border-radius: 6px; border: 1px solid #cbd5e1; background: #fff; font-weight: 600; color: #1e293b;">⬅️ Retour à l'accueil de l'agence</button>
+                </div>
+
                 <div class="domain-card" onclick="loadReport('commercial')">
                     <span class="card-icon">📊</span>
                     <h3>Commercial</h3>
@@ -216,13 +219,10 @@
         </main>
     </div>
 
-    
-      <!-- SDK Supabase -->
-        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
+    <!-- SDK Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <!-- CHARGEMENT DU FICHIER JAVASCRIPT -->
     <script src="script.js"></script>
 
-  
 </body>
 </html>
