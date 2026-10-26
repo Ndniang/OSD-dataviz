@@ -10,19 +10,27 @@
 
     <!-- 1. EN-TÊTE -->
     <header class="site-header">
-    <div class="logo-container">
-        <h1 id="header-logo" class="site-logo">OSD DATAVIZ</h1>
-    </div>
-    <nav class="main-nav">
-        <!-- Bouton avant connexion -->
-        <button id="auth-btn" class="btn-primary" onclick="toggleAuth()">Se connecter</button>
+        <div class="logo-container">
+            <h1 id="header-logo" class="site-logo">OSD DATAVIZ</h1>
+        </div>
+        <nav class="main-nav" style="display: flex; align-items: center; gap: 10px;">
+            <!-- Bouton avant connexion -->
+            <button id="auth-btn" class="btn-primary" onclick="toggleAuth()">Se connecter</button>
 
-        <!-- Bouton après connexion (masqué par défaut) -->
-        <button id="btn-logout-agency" class="btn-logout" onclick="logout()" style="display: none;">
-            🚪 Se déconnecter <span id="logout-agency-name"></span>
-        </button>
-    </nav>
-</header>
+            <!-- Boutons de navigation (dans la navbar) -->
+            <button id="nav-back-domains" class="btn-secondary" onclick="showDomainsGrid()" style="display: none; background: #334155; color: white; border: none; padding: 8px 14px; border-radius: 6px; cursor: pointer; font-size: 13px;">
+                ⬅️ Retour aux domaines
+            </button>
+            <button id="nav-back-home" class="btn-secondary" onclick="goToAgencyHome()" style="display: none; background: #334155; color: white; border: none; padding: 8px 14px; border-radius: 6px; cursor: pointer; font-size: 13px;">
+                ⬅️ Accueil Agence
+            </button>
+
+            <!-- Bouton après connexion -->
+            <button id="btn-logout-agency" class="btn-logout" onclick="logout()" style="display: none;">
+                🚪 Se déconnecter <span id="logout-agency-name"></span>
+            </button>
+        </nav>
+    </header>
 
     <!-- 2. LANDING PAGE PUBLIQUE -->
     <section id="landing-page" class="landing-container">
@@ -164,14 +172,7 @@
 
             </div>
 
-            <!-- B. EN-TÊTE DU RAPPORT POWER BI -->
-            <div class="report-header" id="report-header-block" style="display: none;">
-                <!-- Bouton retour vers la grille des domaines -->
-                <button class="btn-secondary" onclick="showDomainsGrid()" style="margin-bottom: 15px; cursor: pointer; padding: 8px 16px; border-radius: 6px; border: 1px solid #cbd5e1; background: #fff; font-weight: 600; color: #1e293b;">⬅️ Retour aux domaines</button>
-                <h2 id="report-title">Titre du rapport</h2>
-                <p id="report-description">Description du domaine</p>
-            </div>
-
+           
             <!-- C. GRILLE DES DOMAINES -->
             <div id="dashboard-home-grid" class="domains-grid" style="display: none;">
                 <!-- Bouton retour vers la page d'accueil de l'agence -->
