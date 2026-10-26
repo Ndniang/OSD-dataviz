@@ -157,22 +157,21 @@ function goToAgencyHome() {
 function openDomainsView() {
     // Réafficher la barre latérale
     const sidebar = document.getElementById("agency-sidebar");
-    if (sidebar) sidebar.style.display = "block"; // ou "flex" selon votre design initial
+    if (sidebar) sidebar.style.display = "block";
 
     // Masquer la page de bienvenue de l'agence
     const agencyWelcomePage = document.getElementById("agency-welcome-page");
     if (agencyWelcomePage) agencyWelcomePage.style.display = "none";
 
-    // Afficher les blocs de rapports
+    // --- AJOUTE CES LIGNES POUR AFFICHER LA GRILLE DES DOMAINES ---
+    const homeGrid = document.getElementById("dashboard-home-grid");
+    if (homeGrid) homeGrid.style.display = "grid"; // ou "block" selon ton CSS
+    
+    // Cacher les blocs de rapports au début si tu veux d'abord montrer la grille des choix
     const reportHeader = document.getElementById("report-header-block");
     const reportsContainer = document.querySelector(".powerbi-wrapper");
-    if (reportHeader) reportHeader.style.display = "block";
-    if (reportsContainer) reportsContainer.style.display = "block";
-
-    // Charger par défaut le premier rapport (ex: commercial)
-    if (typeof loadReport === "function") {
-        loadReport('commercial');
-    }
+    if (reportHeader) reportHeader.style.display = "none";
+    if (reportsContainer) reportsContainer.style.display = "none";
 }
 // Chargement d'un rapport Power BI
 function loadReport(domainKey) {
