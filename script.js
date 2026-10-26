@@ -132,7 +132,7 @@ function updateAgencyDashboard(user) {
     if (sidebarTitle) sidebarTitle.textContent = user.username;
 
     // Cacher la sidebar dès l'arrivée sur l'accueil
-    const sidebar = document.getElementById("main-sidebar");
+    const sidebar = document.getElementById("agency-sidebar");
     if (sidebar) sidebar.classList.add("force-hide");
 }
 
