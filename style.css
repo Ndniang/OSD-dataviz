@@ -161,6 +161,12 @@ body {
     min-height: 80vh;
 }
 
+#dashboard-home-grid {
+    display: none; /* Par défaut masqué, affiché par le JS */
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+}
+
 .auth-card {
     background: white;
     padding: 40px;
