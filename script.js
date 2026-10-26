@@ -64,7 +64,6 @@ function showLandingPage() {
 async function handleLogin(event) {
     event.preventDefault();
     
-    // Nettoyage de l'organisation et du mot de passe
     const orgInput = document.getElementById("org-input").value.trim().toUpperCase();
     const pwdInput = document.getElementById("password-input").value.trim();
     const errorMsg = document.getElementById("error-message");
@@ -75,7 +74,6 @@ async function handleLogin(event) {
     }
 
     try {
-        // On récupère l'utilisateur par son nom d'agence uniquement
         const { data: users, error } = await sbClient
             .from('users_agency')
             .select('*')
@@ -83,14 +81,10 @@ async function handleLogin(event) {
 
         if (error) throw error;
 
-        // On vérifie ensuite le mot de passe localement (évite les soucis de sensibilité à la casse Supabase)
         if (users && users.length > 0 && users[0].password_hash === pwdInput) {
             currentUserSession = users[0];
             
-            // Masquer la fenêtre de connexion
             document.getElementById("login-section").style.display = "none";
-
-            // Mise à jour de l'affichage
             document.getElementById("auth-btn").style.display = "none";
             const logoutBtn = document.getElementById("btn-logout-agency");
             const logoutNameElem = document.getElementById("logout-agency-name");
@@ -98,7 +92,6 @@ async function handleLogin(event) {
             if (logoutBtn) logoutBtn.style.display = "inline-block";
             if (logoutNameElem) logoutNameElem.textContent = `(${currentUserSession.username})`;
 
-            // Afficher le Dashboard
             document.getElementById("dashboard-layout").style.display = "flex";
             updateAgencyDashboard(currentUserSession);
 
@@ -117,8 +110,8 @@ async function handleLogin(event) {
         }
     }
     goToAgencyHome();
-    
 }
+
 // Mettre à jour les informations d'agence
 function updateAgencyDashboard(user) {
     const titleElem = document.getElementById("agency-title-display");
@@ -131,51 +124,64 @@ function updateAgencyDashboard(user) {
     if (panelRegion) panelRegion.textContent = user.region_filter || "Toutes Régions";
     if (sidebarTitle) sidebarTitle.textContent = user.username;
 
-    // Cacher la sidebar dès l'arrivée sur l'accueil
     const sidebar = document.getElementById("agency-sidebar");
-    if (sidebar) sidebar.classList.add("force-hide");
+    if (sidebar) sidebar.style.display = "none";
 }
 
-// 1. Revenir à la vue d'accueil Agence (Cache la sidebar et affiche la page de bienvenue)
+// 1. Revenir à la vue d'accueil Agence
 function goToAgencyHome() {
-    // Cacher la barre latérale
     const sidebar = document.getElementById("agency-sidebar");
     if (sidebar) sidebar.style.display = "none";
 
-    // Afficher la page de bienvenue de l'agence
     const agencyWelcomePage = document.getElementById("agency-welcome-page");
-    if (agencyWelcomePage) agencyWelcomePage.style.display = "grid"; // ou "flex" selon votre CSS
+    if (agencyWelcomePage) agencyWelcomePage.style.display = "grid";
 
-    // Cacher les blocs de rapports (si affichés)
-    const reportHeader = document.getElementById("report-header-block"); // Ajustez selon votre ID de header de rapport
-    const reportsContainer = document.querySelector(".powerbi-wrapper"); // Ou l'élément qui contient vos iframes
+    const homeGrid = document.getElementById("dashboard-home-grid");
+    if (homeGrid) homeGrid.style.display = "none";
+
+    const reportHeader = document.getElementById("report-header-block");
+    const reportsContainer = document.querySelector(".powerbi-wrapper");
     if (reportHeader) reportHeader.style.display = "none";
     if (reportsContainer) reportsContainer.style.display = "none";
 }
 
 // 2. Quand on clique sur "Accéder aux Domaines & Rapports"
 function openDomainsView() {
-    // 1. Réafficher la barre latérale
     const sidebar = document.getElementById("agency-sidebar");
     if (sidebar) sidebar.style.display = "block";
 
-    // 2. Masquer la page de bienvenue de l'agence
     const agencyWelcomePage = document.getElementById("agency-welcome-page");
     if (agencyWelcomePage) agencyWelcomePage.style.display = "none";
 
-    // 3. Masquer l'en-tête de rapport et l'iframe si un ancien rapport était ouvert
     const reportHeader = document.getElementById("report-header-block");
     const reportsContainer = document.querySelector(".powerbi-wrapper");
     if (reportHeader) reportHeader.style.display = "none";
     if (reportsContainer) reportsContainer.style.display = "none";
 
-    // 4. FORCER L'AFFICHAGE DE LA GRILLE DES DOMAINES
     const homeGrid = document.getElementById("dashboard-home-grid");
     if (homeGrid) {
-        homeGrid.style.display = "grid"; // Affiche la grille
-        homeGrid.style.setProperty('display', 'grid', 'important'); // Force l'affichage par dessus le CSS
+        homeGrid.style.display = "grid"; 
+        homeGrid.style.setProperty('display', 'grid', 'important');
     }
 }
+
+// 3. Revenir de la vue rapport vers la grille des domaines
+function showDomainsGrid() {
+    const reportHeader = document.getElementById("report-header-block");
+    const reportsContainer = document.querySelector(".powerbi-wrapper");
+    if (reportHeader) reportHeader.style.display = "none";
+    if (reportsContainer) reportsContainer.style.display = "none";
+
+    const homeGrid = document.getElementById("dashboard-home-grid");
+    if (homeGrid) {
+        homeGrid.style.display = "grid";
+        homeGrid.style.setProperty('display', 'grid', 'important');
+    }
+
+    const menuItems = document.querySelectorAll(".sidebar-menu li");
+    menuItems.forEach(item => item.classList.remove("active"));
+}
+
 // Chargement d'un rapport Power BI
 function loadReport(domainKey) {
     const agencyPage = document.getElementById("agency-welcome-page");
