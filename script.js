@@ -163,11 +163,13 @@ function openDomainsView() {
     const agencyWelcomePage = document.getElementById("agency-welcome-page");
     if (agencyWelcomePage) agencyWelcomePage.style.display = "none";
 
-    // --- AJOUTE CES LIGNES POUR AFFICHER LA GRILLE DES DOMAINES ---
+    // Afficher la grille des domaines (les cartes cliquables)
     const homeGrid = document.getElementById("dashboard-home-grid");
-    if (homeGrid) homeGrid.style.display = "grid"; // ou "block" selon ton CSS
-    
-    // Cacher les blocs de rapports au début si tu veux d'abord montrer la grille des choix
+    if (homeGrid) {
+        homeGrid.style.setProperty('display', 'grid', 'important');
+    }
+
+    // S'assurer que le lecteur de rapport Power BI et son titre sont cachés au départ
     const reportHeader = document.getElementById("report-header-block");
     const reportsContainer = document.querySelector(".powerbi-wrapper");
     if (reportHeader) reportHeader.style.display = "none";
