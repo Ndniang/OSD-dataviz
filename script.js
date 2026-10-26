@@ -143,6 +143,10 @@ function goToAgencyHome() {
     const reportsContainer = document.querySelector(".powerbi-wrapper");
     if (reportHeader) reportHeader.style.display = "none";
     if (reportsContainer) reportsContainer.style.display = "none";
+
+    // Gestion des boutons de la navbar
+    document.getElementById("nav-back-home").style.display = "none";
+    document.getElementById("nav-back-domains").style.display = "none";
 }
 
 // 2. Quand on clique sur "Accéder aux Domaines & Rapports"
@@ -163,6 +167,10 @@ function openDomainsView() {
         homeGrid.style.display = "grid"; 
         homeGrid.style.setProperty('display', 'grid', 'important');
     }
+
+    // Gestion des boutons de la navbar (Afficher "Accueil Agence", cacher "Retour domaines")
+    document.getElementById("nav-back-home").style.display = "inline-block";
+    document.getElementById("nav-back-domains").style.display = "none";
 }
 
 // 3. Revenir de la vue rapport vers la grille des domaines
@@ -180,6 +188,10 @@ function showDomainsGrid() {
 
     const menuItems = document.querySelectorAll(".sidebar-menu li");
     menuItems.forEach(item => item.classList.remove("active"));
+
+    // Gestion des boutons de la navbar (Afficher "Accueil Agence", cacher "Retour domaines")
+    document.getElementById("nav-back-home").style.display = "inline-block";
+    document.getElementById("nav-back-domains").style.display = "none";
 }
 
 // Chargement d'un rapport Power BI
@@ -223,8 +235,11 @@ function loadReport(domainKey) {
     menuItems.forEach(item => item.classList.remove("active"));
     const activeItem = document.getElementById("menu-" + domainKey);
     if (activeItem) activeItem.classList.add("active");
-}
 
+    // Gestion des boutons de la navbar (Afficher "Retour domaines", cacher "Accueil Agence")
+    document.getElementById("nav-back-home").style.display = "none";
+    document.getElementById("nav-back-domains").style.display = "inline-block";
+}
 // Déconnexion
 function logout() {
     currentUserSession = null;
