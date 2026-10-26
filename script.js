@@ -155,25 +155,26 @@ function goToAgencyHome() {
 
 // 2. Quand on clique sur "Accéder aux Domaines & Rapports"
 function openDomainsView() {
-    // Réafficher la barre latérale
+    // 1. Réafficher la barre latérale
     const sidebar = document.getElementById("agency-sidebar");
     if (sidebar) sidebar.style.display = "block";
 
-    // Masquer la page de bienvenue de l'agence
+    // 2. Masquer la page de bienvenue de l'agence
     const agencyWelcomePage = document.getElementById("agency-welcome-page");
     if (agencyWelcomePage) agencyWelcomePage.style.display = "none";
 
-    // Afficher la grille des domaines (les cartes cliquables)
-    const homeGrid = document.getElementById("dashboard-home-grid");
-    if (homeGrid) {
-        homeGrid.style.setProperty('display', 'grid', 'important');
-    }
-
-    // S'assurer que le lecteur de rapport Power BI et son titre sont cachés au départ
+    // 3. Masquer l'en-tête de rapport et l'iframe si un ancien rapport était ouvert
     const reportHeader = document.getElementById("report-header-block");
     const reportsContainer = document.querySelector(".powerbi-wrapper");
     if (reportHeader) reportHeader.style.display = "none";
     if (reportsContainer) reportsContainer.style.display = "none";
+
+    // 4. FORCER L'AFFICHAGE DE LA GRILLE DES DOMAINES
+    const homeGrid = document.getElementById("dashboard-home-grid");
+    if (homeGrid) {
+        homeGrid.style.display = "grid"; // Affiche la grille
+        homeGrid.style.setProperty('display', 'grid', 'important'); // Force l'affichage par dessus le CSS
+    }
 }
 // Chargement d'un rapport Power BI
 function loadReport(domainKey) {
