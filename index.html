@@ -146,10 +146,7 @@
 
     <!-- 1. BANNIÈRE PRINCIPALE BLEU NUIT -->
     <div class="hero-welcome-card">
-        <span class="badge-status">
-            <span style="width: 8px; height: 8px; background: #10b981; border-radius: 50%; display: inline-block;"></span>
-            Session Agence Active
-        </span>
+        <span class="badge-status">🟢 Session Agence Active</span>
         <h1 id="agency-title-display">Bienvenue - Agence de KAOLACK</h1>
         <p>Consultez les tableaux de bord décisionnels, gérez le suivi analytique et explorez les performances clés de votre périmètre.</p>
         
@@ -158,70 +155,56 @@
         </button>
     </div>
 
-    <!-- 2. RANGÉE DES 4 CARTES -->
+    <!-- 2. RANGÉE DES 4 CARTES (TRÈS IMPORTANT : bien mettre cette classe "agency-kpi-row") -->
     <div class="agency-kpi-row">
 
         <!-- Carte 1 : Fiche d'identité d'agence -->
         <div class="agency-info-panel">
-            <div class="agency-panel-header">
-                <div class="agency-panel-icon">🏢</div>
-                <div class="agency-panel-titles">
-                    <h3 id="panel-agency-name">Agence KAOLACK</h3>
-                    <p>Périmètre d'exploitation local</p>
+            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
+                <div style="font-size: 24px;">🏢</div>
+                <div>
+                    <h3 id="panel-agency-name" style="margin: 0; font-size: 1rem;">Agence KAOLACK</h3>
+                    <p style="margin: 0; font-size: 0.75rem; color: #64748b;">Périmètre local</p>
                 </div>
             </div>
-
             <ul class="agency-details-list">
-                <li>
-                    <span class="label">📍 Région :</span>
-                    <span class="val" id="panel-region-name">KAOLACK</span>
-                </li>
-                <li>
-                    <span class="label">🔐 Accès :</span>
-                    <span class="badge-blue">Agent Local</span>
-                </li>
-                <li>
-                    <span class="label">🟢 Statut :</span>
-                    <span class="badge-green-light">Session Sécurisée</span>
-                </li>
-                <li>
-                    <span class="label">⚡ Données :</span>
-                    <span class="val" style="font-size: 0.82rem; color: #475569;">Power BI Embedded</span>
-                </li>
+                <li>📍 <strong>Région :</strong> <span id="panel-region-name">KAOLACK</span></li>
+                <li>🔐 <strong>Accès :</strong> Agent Local</li>
+                <li>🟢 <strong>Statut :</strong> Sécurisée</li>
+                <li>⚡ <strong>Données :</strong> Power BI</li>
             </ul>
         </div>
 
         <!-- Carte 2 : Domaines -->
         <div class="kpi-stat-card">
-            <div class="kpi-icon-wrapper kpi-icon-blue">📊</div>
-            <div class="kpi-content">
-                <div class="kpi-num">6</div>
-                <div class="kpi-label">Domaines Analytiques</div>
+            <div style="font-size: 20px; margin-bottom: 15px;">📊</div>
+            <div>
+                <div style="font-size: 1.8rem; font-weight: 800; color: #0f172a;">6</div>
+                <div style="font-size: 0.8rem; color: #64748b;">Domaines Analytiques</div>
             </div>
         </div>
 
         <!-- Carte 3 : Disponibilité -->
         <div class="kpi-stat-card">
-            <div class="kpi-icon-wrapper kpi-icon-green">✔</div>
-            <div class="kpi-content">
-                <div class="kpi-num">100%</div>
-                <div class="kpi-label">Disponibilité Système</div>
+            <div style="font-size: 20px; margin-bottom: 15px;">🟢</div>
+            <div>
+                <div style="font-size: 1.8rem; font-weight: 800; color: #0f172a;">100%</div>
+                <div style="font-size: 0.8rem; color: #64748b;">Disponibilité Système</div>
             </div>
         </div>
 
         <!-- Carte 4 : Synchro -->
         <div class="kpi-stat-card">
-            <div class="kpi-icon-wrapper kpi-icon-amber">🔄</div>
-            <div class="kpi-content">
-                <div class="kpi-num">Live</div>
-                <div class="kpi-label">Synchro Données</div>
+            <div style="font-size: 20px; margin-bottom: 15px;">🔄</div>
+            <div>
+                <div style="font-size: 1.8rem; font-weight: 800; color: #0f172a;">Live</div>
+                <div style="font-size: 0.8rem; color: #64748b;">Synchro Données</div>
             </div>
         </div>
 
     </div>
 
-</div>
-           
+</div>           
             <!-- C. GRILLE DES DOMAINES -->
             <div id="dashboard-home-grid" class="domains-grid" style="display: none;">
                 <!-- Bouton retour vers la page d'accueil de l'agence -->
