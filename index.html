@@ -156,7 +156,7 @@
     <p>Consultez les tableaux de bord décisionnels, gérez le suivi analytique et explorez les performances clés de votre périmètre.</p>
     
     <button class="btn-primary-lg" onclick="openDomainsView()">
-        🚀 Accéder aux Domaines & Rapports
+         Accéder aux Domaines & Rapports
     </button>
 </div>
     <!-- 2. RANGÉE DES 4 CARTES (TRÈS IMPORTANT : bien mettre cette classe "agency-kpi-row") -->
@@ -211,48 +211,49 @@
 </div>           
             <!-- C. GRILLE DES DOMAINES -->
             <div id="dashboard-home-grid" class="domains-grid" style="display: none;">
-                <!-- Bouton retour vers la page d'accueil de l'agence -->
-                <div style="grid-column: 1 / -1; margin-bottom: 5px;">
-                    <button class="btn-secondary" onclick="goToAgencyHome()" style="cursor: pointer; padding: 8px 16px; border-radius: 6px; border: 1px solid #cbd5e1; background: #fff; font-weight: 600; color: #1e293b;">⬅️ Retour à l'accueil de l'agence</button>
-                </div>
-
-<div class="domain-card" onclick="loadReport('commercial')">
-    <span class="card-icon"><i class="fa-solid fa-chart-line"></i></span>
-    <h3>Commercial</h3>
-    <p>Analyse des ventes, CA et portefeuille client.</p>
-</div>
-
-<div class="domain-card" onclick="loadReport('technique')">
-    <span class="card-icon"><i class="fa-solid fa-gears"></i></span>
-    <h3>Technique</h3>
-    <p>Suivi des infrastructures et interventions.</p>
-</div>
-
-<div class="domain-card" onclick="loadReport('facturation')">
-    <span class="card-icon"><i class="fa-solid fa-file-invoice-dollar"></i></span>
-    <h3>Facturation</h3>
-    <p>Suivi des abonnés facturés et créances.</p>
-</div>
-
-<div class="domain-card" onclick="loadReport('branchement')">
-    <span class="card-icon"><i class="fa-solid fa-plug"></i></span>
-    <h3>Branchement</h3>
-    <p>Demandes de raccordement et délais.</p>
-</div>
-
-<div class="domain-card" onclick="loadReport('reclamation')">
-    <span class="card-icon"><i class="fa-solid fa-envelope-open-text"></i></span>
-    <h3>Réclamation</h3>
-    <p>Satisfaction client et résolution des litiges.</p>
-</div>
-
-<div class="domain-card" onclick="loadReport('recouvrement')">
-    <span class="card-icon"><i class="fa-solid fa-building-columns"></i></span>
-    <h3>Recouvrement</h3>
-    <p>Factures émises et taux de recouvrement.</p>
-</div>
-
-            <!-- D. WRAPPER POWER BI -->
+            <!-- Bouton retour vers la page d'accueil de l'agence -->
+            <div style="grid-column: 1 / -1; margin-bottom: 5px;">
+                <button class="btn-secondary" onclick="goToAgencyHome()" style="cursor: pointer; padding: 8px 16px; border-radius: 6px; border: 1px solid #cbd5e1; background: #fff; font-weight: 600; color: #1e293b; display: inline-flex; align-items: center; gap: 8px;">
+                    <i class="fa-solid fa-arrow-left"></i> Retour à l'accueil de l'agence
+                </button>
+            </div>
+        
+            <div class="domain-card" onclick="loadReport('commercial')">
+                <span class="card-icon"><i class="fa-solid fa-chart-line"></i></span>
+                <h3>Commercial</h3>
+                <p>Analyse des ventes, CA et portefeuille client.</p>
+            </div>
+            
+            <div class="domain-card" onclick="loadReport('technique')">
+                <span class="card-icon"><i class="fa-solid fa-gears"></i></span>
+                <h3>Technique</h3>
+                <p>Suivi des infrastructures et interventions.</p>
+            </div>
+            
+            <div class="domain-card" onclick="loadReport('facturation')">
+                <span class="card-icon"><i class="fa-solid fa-file-invoice-dollar"></i></span>
+                <h3>Facturation</h3>
+                <p>Suivi des abonnés facturés et créances.</p>
+            </div>
+            
+            <div class="domain-card" onclick="loadReport('branchement')">
+                <span class="card-icon"><i class="fa-solid fa-plug"></i></span>
+                <h3>Branchement</h3>
+                <p>Demandes de raccordement et délais.</p>
+            </div>
+            
+            <div class="domain-card" onclick="loadReport('reclamation')">
+                <span class="card-icon"><i class="fa-solid fa-envelope-open-text"></i></span>
+                <h3>Réclamation</h3>
+                <p>Satisfaction client et résolution des litiges.</p>
+            </div>
+            
+            <div class="domain-card" onclick="loadReport('recouvrement')">
+                <span class="card-icon"><i class="fa-solid fa-building-columns"></i></span>
+                <h3>Recouvrement</h3>
+                <p>Factures émises et taux de recouvrement.</p>
+            </div>
+        </div>            <!-- D. WRAPPER POWER BI -->
             <div class="powerbi-wrapper" style="display: none;">
                 <iframe id="powerbi-frame" src="" allowFullScreen="true"></iframe>
             </div>
