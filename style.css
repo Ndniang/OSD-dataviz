@@ -361,6 +361,10 @@ body {
     grid-template-columns: repeat(3, 1fr);
     gap: 25px;
 }
+.public-domains-grid, .domains-grid {
+    margin-top: 40px; /* Crée un espace propre et aéré sous le texte */
+    padding: 0 20px;
+}
 
 .public-card, .help-card {
     background: rgba(255, 255, 255, 0.95) !important;
