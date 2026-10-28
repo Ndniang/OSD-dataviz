@@ -341,7 +341,7 @@ header, .navbar {
     background-size: cover;
     max-width: 100% !important;
     min-height: calc(100vh - 70px);
-    padding: 60px 40px !important;
+    padding: 20px 40px 60px 40px !important; /* <--- On passe à 20px en haut pour coller sous la navbar */
     margin: 0 !important;
     box-sizing: border-box;
 }
