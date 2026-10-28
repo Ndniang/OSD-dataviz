@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OSD DATAVIZ - Portail Agences</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -41,45 +42,49 @@
     </div>
 
     <!-- GRILLE DES 6 DOMAINES EN APERÇU (NON CLIQUABLE AVANT CONNEXION) -->
-    <div class="public-domains-grid">
-        <div class="public-card">
-            <span class="card-icon">📊</span>
-            <h3>Commercial</h3>
-            <p>Analyse des ventes, du chiffre d'affaires et du portefeuille client.</p>
-            <span class="lock-badge">🔒 Connexion requise</span>
-        </div>
-        <div class="public-card">
-            <span class="card-icon">⚙️</span>
-            <h3>Technique</h3>
-            <p>Suivi des infrastructures, interventions et maintenance.</p>
-            <span class="lock-badge">🔒 Connexion requise</span>
-        </div>
-        <div class="public-card">
-            <span class="card-icon">💳</span>
-            <h3>Facturation</h3>
-            <p>Suivi des abonnés facturés, de la consommation et des créances.</p>
-            <span class="lock-badge">🔒 Connexion requise</span>
-        </div>
-        <div class="public-card">
-            <span class="card-icon">🔌</span>
-            <h3>Branchement</h3>
-            <p>Gestion des nouvelles demandes et suivi des travaux.</p>
-            <span class="lock-badge">🔒 Connexion requise</span>
-        </div>
-        <div class="public-card">
-            <span class="card-icon">📩</span>
-            <h3>Réclamation</h3>
-            <p>Satisfaction abonnés, traitement des tickets et litiges.</p>
-            <span class="lock-badge">🔒 Connexion requise</span>
-        </div>
-        <div class="public-card">
-            <span class="card-icon">🏛️</span>
-            <h3>Recouvrement</h3>
-            <p>Suivi des encaissements, factures émises et créances.</p>
-            <span class="lock-badge">🔒 Connexion requise</span>
-        </div>
+<div class="public-domains-grid">
+    <div class="public-card">
+        <span class="card-icon"><i class="fa-solid fa-chart-line"></i></span>
+        <h3>Commercial</h3>
+        <p>Analyse des ventes, du chiffre d'affaires et du portefeuille client.</p>
+        <span class="lock-badge"><i class="fa-solid fa-lock"></i> Connexion requise</span>
     </div>
-    <!-- SECTION DEMANDE D'AIDE ET SUPPORT -->
+
+    <div class="public-card">
+        <span class="card-icon"><i class="fa-solid fa-gears"></i></span>
+        <h3>Technique</h3>
+        <p>Suivi des infrastructures, interventions et maintenance.</p>
+        <span class="lock-badge"><i class="fa-solid fa-lock"></i> Connexion requise</span>
+    </div>
+
+    <div class="public-card">
+        <span class="card-icon"><i class="fa-solid fa-file-invoice-dollar"></i></span>
+        <h3>Facturation</h3>
+        <p>Suivi des abonnés facturés, de la consommation et des créances.</p>
+        <span class="lock-badge"><i class="fa-solid fa-lock"></i> Connexion requise</span>
+    </div>
+
+    <div class="public-card">
+        <span class="card-icon"><i class="fa-solid fa-plug"></i></span>
+        <h3>Branchement</h3>
+        <p>Demandes de raccordement et délais.</p>
+        <span class="lock-badge"><i class="fa-solid fa-lock"></i> Connexion requise</span>
+    </div>
+
+    <div class="public-card">
+        <span class="card-icon"><i class="fa-solid fa-envelope-open-text"></i></span>
+        <h3>Réclamation</h3>
+        <p>Satisfaction client et résolution des litiges.</p>
+        <span class="lock-badge"><i class="fa-solid fa-lock"></i> Connexion requise</span>
+    </div>
+
+    <div class="public-card">
+        <span class="card-icon"><i class="fa-solid fa-building-columns"></i></span>
+        <h3>Recouvrement</h3>
+        <p>Factures émises et taux de recouvrement.</p>
+        <span class="lock-badge"><i class="fa-solid fa-lock"></i> Connexion requise</span>
+    </div>
+</div>    <!-- SECTION DEMANDE D'AIDE ET SUPPORT -->
     <div class="help-section">
         <div class="help-card">
             <div class="help-icon">❓</div>
